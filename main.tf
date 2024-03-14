@@ -13,8 +13,8 @@ resource "azurerm_storage_account" "stweb"{
     account_tier = "Standard"
 
     network_rules {
-        default_action = "Deny"
-        ip_rules =["195.46.18.146"]
+        default_action = "allow"
+        #ip_rules =["195.46.18.146"]
     }
 
     static_website {
