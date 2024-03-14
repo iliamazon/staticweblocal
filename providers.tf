@@ -1,25 +1,22 @@
 terraform {
   required_version = ">=1.0"
 
-  
-
   required_providers {
-    backend "azurerm" {
-      resource_group_name  = "rgtf"
-      storage_account_name = "tfstatesa"
-      container_name       = "tfstate"
-      key                  = "terraform.tfstate"
-    }
-
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~>3.0"
     }
-
     random = {
       source  = "hashicorp/random"
       version = "~>3.0"
     }
+  }
+
+  backend "azurerm" {
+    resource_group_name  = "rgtf"
+    storage_account_name = "tfstatesa"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
