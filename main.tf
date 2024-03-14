@@ -14,7 +14,7 @@ resource "azurerm_storage_account" "stweb"{
 
     network_rules {
         default_action = "Deny"
-        ip_rules =["2.84.53.90"]
+        ip_rules =["195.46.18.146"]
     }
 
     static_website {
