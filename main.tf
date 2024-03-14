@@ -27,7 +27,7 @@ resource "azurerm_storage_account" "stweb"{
 }
 
 resource "azurerm_storage_container" "stcontainer" {
-    name ="%24web"
+    name ="$web"
     storage_account_name = azurerm_storage_account.stweb.name
     container_access_type = "private"
     
