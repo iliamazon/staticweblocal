@@ -12,10 +12,10 @@ resource "azurerm_storage_account" "stweb"{
     account_replication_type = "LRS"
     account_tier = "Standard"
 
-    network_rules {
-        default_action = "allow"
-        #ip_rules =["195.46.18.146"]
-    }
+    #network_rules {
+    #    default_action = "allow"
+     #   #ip_rules =["195.46.18.146"]
+    #}
 
     static_website {
         index_document = "index.html"
