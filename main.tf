@@ -4,21 +4,18 @@ resource "azurerm_resource_group" "rgst"{
 }
 
 resource "random_id" "stnamepostfix" {
-  length = 3
-  lower  = false
-  numeric =true
-  special = false
-  upper =false
+  byte_length = 3
+  keepers ={
+    stname = var.stname
+  }
 }
 
-locals {
-  storage_prefix=random_string.stnamepostfix.id
-}
+
 
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = var.stname+local.storage_prefix
+    name = random_id.stnamepostfix.keepers.stname
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
