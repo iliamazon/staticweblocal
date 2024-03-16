@@ -12,7 +12,7 @@ resource "random_id" "stnamepostfix" {
 }
 
 locals {
-  storage_prefix={random_string.stnamepostfix.id}
+  storage_prefix=random_string.stnamepostfix.id
 }
 
 resource "azurerm_storage_account" "stweb"{
