@@ -11,7 +11,7 @@ resource "random_string" "stnamepostfix" {
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = concat(var.stname,random_string.stnamepostfix)
+    name = var.stname+random_string.stnamepostfix
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
