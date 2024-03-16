@@ -3,13 +3,16 @@ resource "azurerm_resource_group" "rgst"{
     name = var.rgname
 }
 
-resource "random_string" "stnamepostfix" {
-  length = 6
+resource "random_id" "stnamepostfix" {
+  length = 3
   lower  = false
+  numeric =true
+  special = false
+  upper =false
 }
 
 locals {
-  storage_prefix={random_string.stnamepostfix.result}
+  storage_prefix={random_string.stnamepostfix.id}
 }
 
 resource "azurerm_storage_account" "stweb"{
