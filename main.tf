@@ -8,10 +8,14 @@ resource "random_string" "stnamepostfix" {
   lower  = false
 }
 
+locals {
+  storage_prefix=${random_string.stnamepostfix.result}
+}
+
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = var.stname+random_string.stnamepostfix
+    name = {var.stname.value}-{local.storage_prefix}
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
