@@ -7,13 +7,6 @@ terraform {
       version = "~>3.0"
     }
   }
-
-  backend "azurerm" {
-    resource_group_name  = "rgtf"
-    storage_account_name = "staticili"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-  }
 }
 
 provider "azurerm" {
