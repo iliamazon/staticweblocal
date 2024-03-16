@@ -3,10 +3,15 @@ resource "azurerm_resource_group" "rgst"{
     name = var.rgname
 }
 
+resource "random_string" "stnamepostfix" {
+  length = 6
+  lower  = false
+}
+
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = var.stname
+    name = concat(var.stname,random_string.stnamepostfix)
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
@@ -30,6 +35,9 @@ resource "azurerm_storage_container" "stcontainer" {
     name ="$web"
     storage_account_name = azurerm_storage_account.stweb.name
     container_access_type = "private"
+    depends_on = [
+      azurerm_storage_account.stweb
+    ]
     
 }
 
