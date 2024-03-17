@@ -43,7 +43,11 @@ resource "azurerm_storage_account" "stweb"{
 resource "azurerm_storage_container" "stcontainer" {
     name ="$web"
     storage_account_name = azurerm_storage_account.stweb.name
+    depends_on = [ 
+      azurerm_storage_account.stweb 
+    ]
 }
+
 
 resource "azurerm_storage_blob" "stblob" {
     name = "index.html"
@@ -52,6 +56,10 @@ resource "azurerm_storage_blob" "stblob" {
     type = "Block"
     content_type           = "text/html"
     source                 = "index.html"
+    depends_on = [ 
+      azurerm_storage_account.stweb,
+      azurerm_storage_container.stcontainer
+    ]
 }
 
 resource "azurerm_cdn_profile" "cdnprofile" {
