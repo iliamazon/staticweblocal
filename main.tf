@@ -3,6 +3,8 @@ resource "azurerm_resource_group" "rgst"{
     name = var.rgname
 }
 
+#resource "random_uuid" "test" {
+#}
 resource "random_id" "stnamepostfix" {
   byte_length = 3
   keepers ={
@@ -15,7 +17,7 @@ resource "random_id" "stnamepostfix" {
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = [var.stname+${random_id.stnamepostfix.keepers.stname}]
+    name = "var.stname${random_id.stnamepostfix.keepers.stname}"
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
