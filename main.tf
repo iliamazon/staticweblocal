@@ -25,6 +25,9 @@ resource "azurerm_storage_account" "stweb"{
     account_kind = "StorageV2"
     account_replication_type = "LRS"
     account_tier = "Standard"
+    #new to try for creation of container and enforce https
+    enable_https_traffic_only       = true
+    public_network_access_enabled   = true
 
     #network_rules {
     #    default_action = "allow"
@@ -124,9 +127,29 @@ resource "azurerm_cdn_endpoint" "cdnep" {
 
   origin {
     name      = "myorigin"
-    host_name = azurerm_storage_account.stweb.primary_blob_host
+    host_name = azurerm_storage_account.stweb.primary_web_host
 
   }
 }
 
 
+resource "azurerm_storage_blob" "mycloudwebsite" {
+
+  for_each = fileset("${path.root}/staticwebsite/", "**/*")
+
+  name = each.key
+
+  storage_account_name = azurerm_storage_account.stweb.name
+
+  storage_container_name = azurerm_storage_container.stcontainer.name
+
+  type = "Block"
+
+  source = "${path.root}/assets/${each.key}"
+
+  content_md5 = filemd5("${path.root}/assets/${each.key}")
+  depends_on = [ 
+    azurerm_storage_account.stweb,
+    azurerm_storage_container.stcontainer
+  ]
+}
