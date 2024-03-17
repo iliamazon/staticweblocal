@@ -65,6 +65,22 @@ resource "azurerm_storage_blob" "stblob" {
     ]
 }
 
+resource "azurerm_storage_blob" "mycloudwebsite" {
+  for_each = fileset("${path.root}/staticwebsite/", "**/*")
+  name = each.key
+  storage_account_name = azurerm_storage_account.stweb.name
+  storage_container_name = azurerm_storage_container.stcontainer.name
+  type = "Block"
+  source = "${path.root}/assets/${each.key}"
+  content_md5 = filemd5("${path.root}/assets/${each.key}")
+ 
+#    content_type           = "text/html"
+  depends_on = [ 
+    azurerm_storage_account.stweb,
+    azurerm_storage_container.stcontainer
+  ]
+}
+
 resource "azurerm_cdn_profile" "cdnprofile" {
   name                = "stcdnprofile"
   location            = azurerm_resource_group.rgst.location
@@ -134,18 +150,3 @@ resource "azurerm_cdn_endpoint" "cdnep" {
 }
 
 
-resource "azurerm_storage_blob" "mycloudwebsite" {
-  for_each = fileset("${path.root}/staticwebsite/", "**/*")
-  name = each.key
-  storage_account_name = azurerm_storage_account.stweb.name
-  storage_container_name = azurerm_storage_container.stcontainer.name
-  type = "Block"
-  source = "${path.root}/assets/${each.key}"
-  content_md5 = filemd5("${path.root}/assets/${each.key}")
- 
-#    content_type           = "text/html"
-  depends_on = [ 
-    azurerm_storage_account.stweb,
-    azurerm_storage_container.stcontainer
-  ]
-}
