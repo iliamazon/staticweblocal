@@ -124,7 +124,8 @@ resource "azurerm_cdn_endpoint" "cdnep" {
 
   origin {
     name      = "myorigin"
-    host_name = var.origin_url
+    host_name = azurerm_storage_account.stweb.primary_blob_host
+
   }
 }
 
