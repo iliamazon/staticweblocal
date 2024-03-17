@@ -6,9 +6,8 @@ resource "azurerm_resource_group" "rgst"{
 #resource "random_uuid" "test" {
 #}
 resource "random_string" "stnamepostfix" {
-  byte_length = 3
+  length = 3
   special = false
-  #random_id
   keepers ={
     stname = var.stname
   }
