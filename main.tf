@@ -36,6 +36,7 @@ resource "azurerm_storage_account" "stweb"{
 
     static_website {
         index_document = "index.html"
+        error_404_document = "404.html"
     }
 
     tags ={
@@ -53,33 +54,19 @@ resource "azurerm_storage_container" "stcontainer" {
 
 
 resource "azurerm_storage_blob" "stblob" {
-    name = "index.html"
+    for_each = fileset("${path.root}/upload/", "**/*")
+    name = each.key
     storage_account_name = azurerm_storage_account.stweb.name
     storage_container_name = azurerm_storage_container.stcontainer.name
     type = "Block"
-    content_type           = "text/html"
-    source                 = "index.html"
+    #content_type           = "text/html"
+    source = "${path.root}/upload/${each.key}"
     depends_on = [ 
       azurerm_storage_account.stweb,
       azurerm_storage_container.stcontainer
     ]
 }
 
-resource "azurerm_storage_blob" "mycloudwebsite" {
-  for_each = fileset("${path.root}/staticwebsite/", "**/*")
-  name = each.key
-  storage_account_name = azurerm_storage_account.stweb.name
-  storage_container_name = azurerm_storage_container.stcontainer.name
-  type = "Block"
-  source = "${path.root}/assets/${each.key}"
-  content_md5 = filemd5("${path.root}/assets/${each.key}")
- 
-#    content_type           = "text/html"
-  depends_on = [ 
-    azurerm_storage_account.stweb,
-    azurerm_storage_container.stcontainer
-  ]
-}
 
 resource "azurerm_cdn_profile" "cdnprofile" {
   name                = "stcdnprofile"
