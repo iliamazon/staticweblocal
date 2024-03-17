@@ -1,4 +1,4 @@
 location = "westeurope"
 rgname = "rgwebsite"
-stname = "myilistweb00"
+stname = "myilist"
 origin_url = "ilicloudtank.cloud"
