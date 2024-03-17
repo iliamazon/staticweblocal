@@ -8,6 +8,7 @@ resource "azurerm_resource_group" "rgst"{
 resource "random_string" "stnamepostfix" {
   length = 3
   special = false
+  upper = false
   keepers ={
     stname = var.stname
   }
