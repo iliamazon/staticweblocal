@@ -77,7 +77,8 @@ resource "azurerm_cdn_endpoint" "cdnep" {
   profile_name        = azurerm_cdn_profile.cdnprofile.name
   location            = azurerm_resource_group.rgst.location
   resource_group_name = azurerm_resource_group.rgst.name
-  is_http_allowed               = true
+  #not allow http access
+  is_http_allowed               = false
   is_https_allowed              = true
   querystring_caching_behaviour = "IgnoreQueryString"
   is_compression_enabled        = true
@@ -134,20 +135,15 @@ resource "azurerm_cdn_endpoint" "cdnep" {
 
 
 resource "azurerm_storage_blob" "mycloudwebsite" {
-
   for_each = fileset("${path.root}/staticwebsite/", "**/*")
-
   name = each.key
-
   storage_account_name = azurerm_storage_account.stweb.name
-
   storage_container_name = azurerm_storage_container.stcontainer.name
-
   type = "Block"
-
   source = "${path.root}/assets/${each.key}"
-
   content_md5 = filemd5("${path.root}/assets/${each.key}")
+ 
+#    content_type           = "text/html"
   depends_on = [ 
     azurerm_storage_account.stweb,
     azurerm_storage_container.stcontainer
