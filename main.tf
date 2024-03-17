@@ -38,7 +38,7 @@ resource "azurerm_storage_account" "stweb"{
 resource "azurerm_storage_container" "stcontainer" {
     name ="$web"
     storage_account_name = azurerm_storage_account.stweb.name
-    container_access_type = "public"
+    container_access_type = "container"
     depends_on = [
       azurerm_storage_account.stweb
     ]
