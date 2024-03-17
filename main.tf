@@ -15,7 +15,7 @@ resource "random_id" "stnamepostfix" {
 resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
-    name = random_id.stnamepostfix.keepers.stname
+    name = [var.stname+${random_id.stnamepostfix.keepers.stname}]
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
@@ -38,11 +38,6 @@ resource "azurerm_storage_account" "stweb"{
 resource "azurerm_storage_container" "stcontainer" {
     name ="$web"
     storage_account_name = azurerm_storage_account.stweb.name
-    container_access_type = "container"
-    depends_on = [
-      azurerm_storage_account.stweb
-    ]
-    
 }
 
 resource "azurerm_storage_blob" "stblob" {
