@@ -20,7 +20,7 @@ resource "azurerm_storage_account" "stweb"{
     location = azurerm_resource_group.rgst.location
     resource_group_name = azurerm_resource_group.rgst.name
     #name = "var.stname${random_id.stnamepostfix.keepers.stname}"
-    name = "var.stname${random_string.stnamepostfix.result}"
+    name = "${var.stname}${random_string.stnamepostfix.result}"
     access_tier = "Hot"
     account_kind = "StorageV2"
     account_replication_type = "LRS"
