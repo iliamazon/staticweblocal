@@ -13,8 +13,6 @@ resource "random_string" "stnamepostfix" {
   }
 }
 
-
-
 resource "azurerm_storage_account" "stweb" {
   location                      = azurerm_resource_group.rgst.location
   resource_group_name           = azurerm_resource_group.rgst.name
@@ -59,7 +57,7 @@ resource "azurerm_storage_blob" "stblobone" {
 
 resource "azurerm_storage_blob" "stblobtwo" {
   for_each               = fileset("${path.root}/upload/", "js/*")
-  name                   = each.key
+name                   = each.key
   storage_account_name   = azurerm_storage_account.stweb.name
   storage_container_name = data.azurerm_storage_container.stcontainer.name
   type                   = "Block"
@@ -71,6 +69,18 @@ resource "azurerm_storage_blob" "stblobtwo" {
   ]
 }
 
+#resource "azurerm_storage_blob" "stblob" {
+#  for_each               = fileset("${path.root}/upload/", "**/**/*")
+#  name                   = each.key
+#  storage_account_name   = azurerm_storage_account.stweb.name
+#  storage_container_name = data.azurerm_storage_container.stcontainer.name
+#  type                   = "Block"
+#  source = "${path.root}/upload/${each.key}"
+
+#    depends_on = [
+#    azurerm_storage_account.stweb
+#  ]
+#}
 
 
 resource "azurerm_storage_blob" "stblobthree" {
@@ -178,8 +188,6 @@ resource "azurerm_cdn_endpoint" "cdnep" {
     name      = "myorigin"
   #  host_name = azurerm_storage_account.stweb.primary_web_endpoint
   host_name = azurerm_storage_account.stweb.primary_web_host
-host_header = azurerm_storage_account.stweb.primary_web_host
-
   }
 
 
@@ -188,7 +196,6 @@ host_header = azurerm_storage_account.stweb.primary_web_host
     azurerm_cdn_profile.cdnprofile
   ]
 }
-
 
 
 
